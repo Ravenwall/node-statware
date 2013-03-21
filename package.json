@@ -1,0 +1,35 @@
+{
+  "name": "statware",
+  "description": "Status aggregation suite with middle-ware like abilities. Used by the Ravenwall agent.",
+  "version": "0.1.0",
+  "author": "Bryce B. Baril <bryce@ravenwall.com>",
+  "dependencies": {
+    "request": "~2.16.6",
+    "fixed-array": "~0.1.1"
+  },
+  "devDependencies": {
+    "tap": ">=0.3.x"
+  },
+  "keywords": [
+    "monitoring",
+    "health",
+    "status",
+    "stats",
+    "performance",
+    "ravenwall"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/Ravenwall/node-statware.git"
+  },
+  "main": "index.js",
+  "directories": {
+    "test": "./test"
+  },
+  "scripts": {
+    "test": "tap test/"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  }
+}
