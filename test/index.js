@@ -67,7 +67,7 @@ test("logger", function (t) {
       runs.push(Date.now())
       t.equivalent(stats, {foo: "bar"}, "'logged' stats are correct.")
       if (runs.length == 2) {
-        t.ok(runs[1] > runs[0] + 990, "scheduled run was about 1 second later")
+        t.ok(runs[1] > runs[0] + 100, "scheduled run was later")
         sw.stopLogger()
       }
       if (runs.length > 2) {
@@ -92,7 +92,7 @@ test("pusher", function (t) {
         t.equal(req.method, "POST", "pusher POSTed")
         t.equal(req.headers.hi, "mom", "Header sent")
         if (runs.length == 2) {
-          t.ok(runs[1] > runs[0] + 900, "scheduled run was about 1 second later")
+          t.ok(runs[1] > runs[0] + 100, "scheduled run was later")
           sw.stopPusher()
           server.close()
         }
