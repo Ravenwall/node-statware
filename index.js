@@ -26,6 +26,12 @@ function statware(initial) {
   return new Statware(initial)
 }
 
+/**
+ * The Statware class incapsulates a stat middleware tool for recording application stats
+ * and allows behavior to be added that can send or log those stats.
+ *
+ * @param {Object} initial The initial status values. It is sometimes useful to bootstrap some values.
+ */
 function Statware(initial) {
   this.stats = stats(initial)
 }
