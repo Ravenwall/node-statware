@@ -5,7 +5,8 @@
   "author": "Bryce B. Baril <bryce@ravenwall.com>",
   "dependencies": {
     "request": "~2.16.6",
-    "fixed-array": "~0.1.1"
+    "fixed-array": "~0.1.1",
+    "tap": "~0.4.2"
   },
   "devDependencies": {
     "tap": ">=0.3.x"
