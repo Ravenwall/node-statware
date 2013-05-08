@@ -1,8 +1,16 @@
-module.exports = statware
-module.exports.Statware = Statware
-module.exports.logger = logger
-module.exports.pusher = pusher
-module.exports.page = page
+module.exports = Statware
+module.exports.logger = function () {
+  var s = Statware()
+  return logger.apply(s, arguments)
+}
+module.exports.pusher = function () {
+  var s = Statware()
+  return pusher.apply(s, arguments)
+}
+module.exports.page = function () {
+  var s = Statware()
+  return page.apply(s, arguments)
+}
 
 module.exports.memstats = memstats
 module.exports.sysstats = sysstats
@@ -15,24 +23,13 @@ var stats = require("./stats")
 var server = require("./server")
 
 /**
- * Create a new Statware object.
- *
- * @param {Stats} initial The initial values for a Stats object.
- */
-function statware(initial) {
-  if (initial instanceof Statware) {
-    return initial
-  }
-  return new Statware(initial)
-}
-
-/**
  * The Statware class incapsulates a stat middleware tool for recording application stats
  * and allows behavior to be added that can send or log those stats.
  *
  * @param {Object} initial The initial status values. It is sometimes useful to bootstrap some values.
  */
 function Statware(initial) {
+  if (!(this instanceof Statware)) return new Statware(initial)
   this.stats = stats(initial)
 }
 Statware.prototype.logger = logger
@@ -68,7 +65,7 @@ Statware.prototype.getStats = function (cb) {
  * @return {Statware}
  */
 function logger(handle, seconds) {
-  var self = statware(this)
+  var self = this
   self.log = function () {
     self.stats.getStats(handle)
   }
@@ -98,18 +95,23 @@ function pusher(options, seconds) {
   if (!options.url) throw new Error("Please provide a url to push to.")
   options.json = true
   options.timeout = options.timeout || 10000
-  var self = statware(this)
-  self.push = function () {
-    self.stats.getStats(function (stats) {
-        options.body = stats
-        request.post(options, function (err, res) {
+  var self = this
+  self.push = function (cb) {
+    if (!cb) {
+      cb = function (err, res) {
           if (err) {
             console.log("Unable to push stats.", err)
+            return
           }
           if (res.statusCode >= 400) {
             console.log("Unable to push stats. Server reported %s", res.statusCode)
+            return
           }
-        })
+        }
+    }
+    self.stats.getStats(function (stats) {
+        options.body = stats
+        request.post(options, cb)
     })
   }
 
@@ -133,7 +135,7 @@ function pusher(options, seconds) {
  * @return {Statware}
  */
 function page(port) {
-  var self = statware(this)
+  var self = this
   self.server = server(self)
   self.server.listen(port || 7667)
   self.stopPage = function () {

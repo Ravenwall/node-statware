@@ -16,20 +16,20 @@ test("create statware", function (t) {
   t.plan(5)
 
   var sw = statware()
-  t.ok(sw instanceof statware.Statware, "Used directly.")
+  t.ok(sw instanceof statware, "Used directly.")
 
   var sw_logger = statware.logger(console.log)
-  t.ok(sw_logger instanceof statware.Statware, "Used indirectly (logger)")
+  t.ok(sw_logger instanceof statware, "Used indirectly (logger)")
 
   var sw_pusher = statware.pusher({url: "hi"})
-  t.ok(sw_pusher instanceof statware.Statware, "Used indirectly (pusher)")
+  t.ok(sw_pusher instanceof statware, "Used indirectly (pusher)")
 
   var sw_page = statware.page()
-  t.ok(sw_page instanceof statware.Statware, "Used indirectly (page)")
+  t.ok(sw_page instanceof statware, "Used indirectly (page)")
   sw_page.stopPage()
 
   var sw_chained = statware.logger(console.log).pusher({url: "hi"})
-  t.ok(sw_chained instanceof statware.Statware, "chained")
+  t.ok(sw_chained instanceof statware, "chained")
 })
 
 test("contains stats", function (t) {
