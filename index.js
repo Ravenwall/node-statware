@@ -114,13 +114,13 @@ function pusher(options, seconds) {
         request.post(options, cb)
     })
   }
+  self.pushUrl = options.url
 
   if (seconds && !isNaN(seconds) && seconds > 0) {
     self.pushInterval = setInterval(self.push, seconds * 1000)
     self.stopPusher = function () {
       clearInterval(self.pushInterval)
     }
-    self.pushUrl = options.url
   }
   return self
 }
