@@ -81,7 +81,7 @@ test("logger", function (t) {
 
 // Pusher
 test("pusher", function (t) {
-    t.plan(5)
+    t.plan(6)
 
     var sw = statware({foo: "bar"})
     var runs = []
@@ -107,6 +107,7 @@ test("pusher", function (t) {
     }).listen(9119, function () {
       sw.pusher({url: "http://localhost:9119/foo", headers: {hi: "mom"}}, 1)
       sw.push()
+      t.equal(sw.pushUrl, "http://localhost:9119/foo", "Push URL is exposed")
     })
 })
 

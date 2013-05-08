@@ -120,6 +120,7 @@ function pusher(options, seconds) {
     self.stopPusher = function () {
       clearInterval(self.pushInterval)
     }
+    self.pushUrl = options.url
   }
   return self
 }
