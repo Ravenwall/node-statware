@@ -17,8 +17,8 @@ module.exports.sysstats = sysstats
 module.exports.procstats = procstats
 
 var os = require("os")
-var request = require("request")
 
+var push = require("./push")
 var stats = require("./stats")
 var server = require("./server")
 
@@ -108,8 +108,7 @@ function pusher(options, seconds) {
   }
   self.push = function (cb) {
     self.stats.getStats(function (stats) {
-        options.body = stats
-        request.post(options, cb || defaultCallback)
+        push(options, stats, cb || defaultCallback)
     })
   }
   self.pushUrl = options.url
