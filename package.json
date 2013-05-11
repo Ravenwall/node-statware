@@ -4,7 +4,7 @@
   "version": "0.2.3",
   "author": "Bryce B. Baril <bryce@ravenwall.com>",
   "dependencies": {
-    "request": "~2.16.6",
+    "request": "~2.21.0",
     "fixed-array": "~0.1.1"
   },
   "devDependencies": {
