@@ -96,22 +96,20 @@ function pusher(options, seconds) {
   options.json = true
   options.timeout = options.timeout || 10000
   var self = this
-  self.push = function (cb) {
-    if (!cb) {
-      cb = function (err, res) {
-          if (err) {
-            console.log("Unable to push stats.", err)
-            return
-          }
-          if (res.statusCode >= 400) {
-            console.log("Unable to push stats. Server reported %s", res.statusCode)
-            return
-          }
-        }
+  var defaultCallback = function (err, res) {
+    if (err) {
+      console.log("Unable to push stats.", err)
+      return
     }
+    if (res.statusCode >= 400) {
+      console.log("Unable to push stats. Server reported %s", res.statusCode)
+      return
+    }
+  }
+  self.push = function (cb) {
     self.stats.getStats(function (stats) {
         options.body = stats
-        request.post(options, cb)
+        request.post(options, cb || defaultCallback)
     })
   }
   self.pushUrl = options.url
