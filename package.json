@@ -1,7 +1,7 @@
 {
   "name": "statware",
   "description": "Status aggregation suite with middle-ware like abilities. Used by the Ravenwall agent.",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": "Bryce B. Baril <bryce@ravenwall.com>",
   "dependencies": {
     "request": "~2.21.0",
