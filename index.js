@@ -108,7 +108,7 @@ function pusher(options, seconds) {
   }
   self.push = function (cb) {
     self.stats.getStats(function (stats) {
-        push(options, stats, cb || defaultCallback)
+      push(options, stats, cb || defaultCallback)
     })
   }
   self.pushUrl = options.url

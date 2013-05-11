@@ -52,11 +52,11 @@ function push(options, body, cb) {
   request.headers["User-Agent"] = "Mozilla/5.0 (compatible; Ravenwall_NodeStatware/0.5; +https://npm.im/statware)"
 
   request.headers["Content-Length"] = push_content.length
+  request.headers["Content-Type"] = "application/json"
 
   var request_handler = http
   if (uri.protocol == "https:") request_handler = https
 
-  console.log(request)
   var req = request_handler.request(request, function(res) {
     var content = ""
     var fetched_length = 0
