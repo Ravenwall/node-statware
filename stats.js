@@ -16,6 +16,8 @@ function Stats(initial) {
   this.helper_stack = []
 }
 Stats.prototype._handle = function (out) {
+  // Bypass helper chain if there is none. (Mostly to avoid tacking on stats_runtime)
+  if (this.helper_stack.length == 0) return out(this.status)
   var self = this
   var index = 0
   var stack = this.helper_stack
