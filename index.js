@@ -187,6 +187,10 @@ function procstats(stats, next) {
   stats.uptime = process.uptime()
   stats.user = process.env.USER
   stats.versions = process.versions
+  stats.hostinfo = {
+    arch: process.arch,
+    platform: process.platform,
+  }
   stats.active_requests = process._getActiveRequests().length
   stats.active_handles = process._getActiveHandles().length
   next()

@@ -19,12 +19,15 @@ Stats.prototype._handle = function (out) {
   var self = this
   var index = 0
   var stack = this.helper_stack
+  var start = process.hrtime()
   function next(error) {
     if (error && error instanceof Error) {
       self.increment("helperErrors")
     }
     var layer = stack[index++]
     if (!layer) {
+      var elapsed = process.hrtime(start)
+      self.status.stats_runtime = elapsed[0] + elapsed[1] / 1e9
       return out(self.status)
     }
     layer(self.status, next)
