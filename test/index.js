@@ -33,7 +33,7 @@ test("create statware", function (t) {
 })
 
 test("contains stats", function (t) {
-  t.plan(6)
+  t.plan(7)
 
   var sw = statware({hi: "world"})
   sw.getStats(function (stats) {
@@ -48,9 +48,10 @@ test("contains stats", function (t) {
     n()
   })
   sw.getStats(function (stats) {
-    t.ok(stats.checktime, "procstats was run.")
-    t.ok(stats.loadavg, "sysstats was run.")
-    t.ok(stats.rss, "memstats was run.")
+    t.ok(stats.process.pid, "procstats was run.")
+    t.ok(stats.system.loadavg, "sysstats was run.")
+    t.ok(stats.process.memory.rss, "memstats was run (process)")
+    t.ok(stats.system.memory.free, "memstats was run (system)")
     t.equal(stats.hi, "world", "Initial value still there.")
     t.equal(stats.newval, "abc", "Custom helper was run.")
   })

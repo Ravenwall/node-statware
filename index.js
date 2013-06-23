@@ -40,6 +40,7 @@ function Statware(initial) {
   this.set = stats.set.bind(stats)
   this.increment = stats.increment.bind(stats)
   this.incrementHash = stats.incrementHash.bind(stats)
+  this.namespace = stats.namespace.bind(stats)
 
   this.stats = stats
 }
@@ -155,6 +156,13 @@ function page(port) {
   return self
 }
 
+function namespace(hash, space) {
+  if (hash[space] == null) {
+    hash[space] = {}
+  }
+  return hash[space]
+}
+
 /**
  * A provided async helper that appends memory stats.
  *
@@ -162,12 +170,17 @@ function page(port) {
  *   sw.registerHelper(statware.memstats)
  */
 function memstats(stats, next) {
-  stats.freemem = os.freemem()
-  stats.totalmem = os.totalmem()
+  var hostinfo = namespace(stats, "system")
+  var hostmem = namespace(hostinfo, "memory")
+  hostmem.free = os.freemem()
+  hostmem.total = os.totalmem()
+
+  var proc = namespace(stats, "process")
+  var procmem = namespace(proc, "memory")
   var mem = process.memoryUsage()
-  stats.rss = mem.rss
-  stats.heapTotal = mem.heapTotal
-  stats.heapUsed = mem.heapUsed
+  procmem.rss = mem.rss
+  procmem.heapTotal = mem.heapTotal
+  procmem.heapUsed = mem.heapUsed
   next()
 }
 
@@ -178,12 +191,25 @@ function memstats(stats, next) {
  *   sw.registerHelper(statware.sysstats)
  */
 function sysstats(stats, next) {
-  stats.hostname = os.hostname()
+  var hostinfo = namespace(stats, "system")
+  hostinfo.arch = process.arch
+  hostinfo.platform = process.platform
+  hostinfo.hostname = os.hostname()
+  hostinfo.uptime = os.uptime()
+
   var load = os.loadavg()
-  stats.loadavg = {}
-  stats.loadavg["1m"] = load[0]
-  stats.loadavg["5m"] = load[1]
-  stats.loadavg["15m"] = load[2]
+  hostinfo.loadavg = {}
+  hostinfo.loadavg["1m"] = load[0]
+  hostinfo.loadavg["5m"] = load[1]
+  hostinfo.loadavg["15m"] = load[2]
+
+  // TODO more cpu info
+  var cpuinfo = os.cpus()
+  var cpu = namespace(hostinfo, "cpu")
+  cpu.cores = cpuinfo.length
+  // TODO is it possible to have multiple models?
+  cpu.model = cpuinfo[0].model
+  cpu.speed = cpuinfo.reduce(function (p, c) { return p + c.speed}, 0) / cpuinfo.length
   next()
 }
 
@@ -194,17 +220,13 @@ function sysstats(stats, next) {
  *   sw.registerHelper(statware.procstats)
  */
 function procstats(stats, next) {
-  stats.pid = process.pid
-  stats.title = process.title
-  stats.checktime = Date.now()
-  stats.uptime = process.uptime()
-  stats.user = process.env.USER
-  stats.versions = process.versions
-  stats.hostinfo = {
-    arch: process.arch,
-    platform: process.platform,
-  }
-  stats.active_requests = process._getActiveRequests().length
-  stats.active_handles = process._getActiveHandles().length
+  var proc = namespace(stats, "process")
+  proc.pid = process.pid
+  proc.title = process.title
+  proc.uptime = process.uptime()
+  proc.user = process.env.USER
+  proc.versions = process.versions
+  proc.active_requests = process._getActiveRequests().length
+  proc.active_handles = process._getActiveHandles().length
   next()
 }

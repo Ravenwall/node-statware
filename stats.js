@@ -19,7 +19,9 @@ Stats.prototype._handle = function (out) {
     var layer = stack[index++]
     if (!layer) {
       var elapsed = process.hrtime(start)
-      self._stats.stats_runtime = elapsed[0] + elapsed[1] / 1e9
+      var agentStats = self.namespace("statware")
+      agentStats.checktime = Date.now()
+      agentStats.stats_runtime = elapsed[0] + elapsed[1] / 1e9
       return out(self._stats)
     }
     layer(self._stats, next)
@@ -42,15 +44,20 @@ Stats.prototype.increment = function (key) {
   }
 }
 Stats.prototype.incrementHash = function (key, subkey) {
-  if (this._stats[key] === undefined) {
-    this._stats[key] = {}
-  }
-  if (isNaN(this._stats[key][subkey])) {
-    this._stats[key][subkey] = 1
+  var hash = this.namespace(key)
+
+  if (isNaN(hash[subkey])) {
+    hash[subkey] = 1
   }
   else {
-    this._stats[key][subkey]++
+    hash[subkey]++
   }
+}
+Stats.prototype.namespace = function (key) {
+  if (this._stats[key] == null) {
+    this._stats[key] = {}
+  }
+  return this._stats[key]
 }
 
 // Async helpers should be be function(status_object, next)
