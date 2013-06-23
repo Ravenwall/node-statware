@@ -19,8 +19,10 @@ module.exports.procstats = procstats
 var os = require("os")
 
 var push = require("./push")
-var stats = require("./stats")
+var Stats = require("./stats")
 var server = require("./server")
+
+var fa = require("fixed-array")
 
 /**
  * The Statware class incapsulates a stat middleware tool for recording application stats
@@ -30,26 +32,37 @@ var server = require("./server")
  */
 function Statware(initial) {
   if (!(this instanceof Statware)) return new Statware(initial)
-  this.stats = stats(initial)
+  var stats = Stats(initial)
+
+  // Wrap Stats methods
+  this.registerHelper = stats.registerHelper.bind(stats)
+  this.getStats = stats.getStats.bind(stats)
+  this.set = stats.set.bind(stats)
+  this.increment = stats.increment.bind(stats)
+  this.incrementHash = stats.incrementHash.bind(stats)
+
+  this.stats = stats
 }
 Statware.prototype.logger = logger
 Statware.prototype.pusher = pusher
 Statware.prototype.page = page
 
 /**
- * Register a helper for the stats object.
- *
- * @param {Function(Stats, next)} helper Add a helper to the Stats helper chain. Must call next().
+ * Create a capped history of values to report min/max/mean of
+ * @param  {string} key The name of the capped collection
+ * @param  {number} max The maximum size of the history, FIFO
+ * @return {FixedValueHistory}     The history object. history.push(values) to it to store them.
  */
-Statware.prototype.registerHelper = function (helper) {
-  this.stats.registerHelper(helper)
-}
-
-/**
- * Get the stats stored internally, running all helpers.
- */
-Statware.prototype.getStats = function (cb) {
-  this.stats.getStats(cb)
+Statware.prototype.cappedHistory = function (key, max) {
+  var capped = fa.newFixedValueHistory(max)
+  this.registerHelper(function (status, next) {
+    status[key] = {}
+    status[key].min = capped.min()
+    status[key].max = capped.max()
+    status[key].mean = capped.mean()
+    next()
+  })
+  return capped
 }
 
 /**

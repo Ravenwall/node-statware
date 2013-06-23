@@ -1,23 +1,13 @@
-module.exports = stats
-var fa = require("fixed-array")
-
-function stats(initial) {
-  if (initial && initial instanceof Stats) {
-    return initial
-  }
-  if (initial && typeof initial == "object") {
-    return new Stats(initial)
-  }
-  return new Stats({})
-}
+module.exports = Stats
 
 function Stats(initial) {
-  this.status = initial
+  if (!(this instanceof Stats)) return new Stats(initial)
+  this._stats = initial || {}
   this.helper_stack = []
 }
 Stats.prototype._handle = function (out) {
   // Bypass helper chain if there is none. (Mostly to avoid tacking on stats_runtime)
-  if (this.helper_stack.length == 0) return out(this.status)
+  if (this.helper_stack.length == 0) return out(this._stats)
   var self = this
   var index = 0
   var stack = this.helper_stack
@@ -29,10 +19,10 @@ Stats.prototype._handle = function (out) {
     var layer = stack[index++]
     if (!layer) {
       var elapsed = process.hrtime(start)
-      self.status.stats_runtime = elapsed[0] + elapsed[1] / 1e9
-      return out(self.status)
+      self._stats.stats_runtime = elapsed[0] + elapsed[1] / 1e9
+      return out(self._stats)
     }
-    layer(self.status, next)
+    layer(self._stats, next)
   }
   next()
 }
@@ -62,17 +52,7 @@ Stats.prototype.incrementHash = function (key, subkey) {
     this.status[key][subkey]++
   }
 }
-Stats.prototype.cappedHistory = function (key, max) {
-  var capped = fa.newFixedValueHistory(max)
-  this.registerHelper(function (status, next) {
-    status[key] = {}
-    status[key].min = capped.min()
-    status[key].max = capped.max()
-    status[key].mean = capped.mean()
-    next()
-  })
-  return capped
-}
+
 // Async helpers should be be function(status_object, next)
 Stats.prototype.registerHelper = function (fn) {
   this.helper_stack.push(fn)
