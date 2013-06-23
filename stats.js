@@ -31,25 +31,25 @@ Stats.prototype.getStats = function (callback) {
   self._handle(callback)
 }
 Stats.prototype.set = function (key, value) {
-  this.status[key] = value
+  this._stats[key] = value
 }
 Stats.prototype.increment = function (key) {
-  if (isNaN(this.status[key])) {
-    this.status[key] = 1
+  if (isNaN(this._stats[key])) {
+    this._stats[key] = 1
   }
   else {
-    this.status[key]++
+    this._stats[key]++
   }
 }
 Stats.prototype.incrementHash = function (key, subkey) {
-  if (this.status[key] === undefined) {
-    this.status[key] = {}
+  if (this._stats[key] === undefined) {
+    this._stats[key] = {}
   }
-  if (isNaN(this.status[key][subkey])) {
-    this.status[key][subkey] = 1
+  if (isNaN(this._stats[key][subkey])) {
+    this._stats[key][subkey] = 1
   }
   else {
-    this.status[key][subkey]++
+    this._stats[key][subkey]++
   }
 }
 
