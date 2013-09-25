@@ -1,10 +1,10 @@
-node-statware
+statware
 =============
 
 [![NPM](https://nodei.co/npm/statware.png)](https://nodei.co/npm/statware/)
 
-[![david-dm](https://david-dm.org/ravenwall/statware.png)](https://david-dm.org/ravenwall/statware/)
-[![david-dm](https://david-dm.org/ravenwall/statware/dev-status.png)](https://david-dm.org/ravenwall/statware#info=devDependencies/)
+[![david-dm](https://david-dm.org/ravenwall/node-statware.png)](https://david-dm.org/ravenwall/statware/)
+[![david-dm](https://david-dm.org/ravenwall/node-statware/dev-status.png)](https://david-dm.org/ravenwall/statware#info=devDependencies/)
 
 Node.js status monitoring wares. Used by the Ravenwall node.js agent.
 
