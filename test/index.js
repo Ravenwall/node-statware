@@ -1,4 +1,4 @@
-var test = require("tap").test
+var test = require("tape").test
 var http = require("http")
 var request = require("request")
 
@@ -37,7 +37,7 @@ test("contains stats", function (t) {
 
   var sw = statware({hi: "world"})
   sw.getStats(function (stats) {
-    t.equivalent(stats, {hi: "world"}, "Keeps initial stats")
+    t.deepEquals(stats, {hi: "world"}, "Keeps initial stats")
   })
 
   sw.registerHelper(statware.procstats)
@@ -66,7 +66,7 @@ test("logger", function (t) {
 
     function testLogger(stats) {
       runs.push(Date.now())
-      t.equivalent(stats, {foo: "bar"}, "'logged' stats are correct.")
+      t.deepEquals(stats, {foo: "bar"}, "'logged' stats are correct.")
       if (runs.length == 2) {
         t.ok(runs[1] > runs[0] + 100, "scheduled run was later")
         sw.stopLogger()
@@ -131,13 +131,12 @@ test("page", function (t) {
     request("http://localhost:9111/stats.json", {followRedirect: false}, function (err, res, body) {
       t.equal(err, null, "No error")
       t.equal(res.statusCode, 200, "Success")
-      console.log(body)
-      t.equivalent(JSON.parse(body), {foo: "bar"}, "Body  matches expected status.")
+      t.deepEquals(JSON.parse(body), {foo: "bar"}, "Body  matches expected status.")
     })
     setTimeout(function () {
       sw.stopPage()
       request("http://localhost:9111/stats.json", {followRedirect: false}, function (err, res, body) {
-        t.type(err, Error, "Error is returned, page server is shut down.")
+        t.ok(err instanceof Error, "Error is returned, page server is shut down.")
       })
     }, 500)
 })

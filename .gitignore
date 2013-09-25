@@ -14,3 +14,4 @@ node_modules
 debug
 
 npm-debug.log
+.tern-port

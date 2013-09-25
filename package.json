@@ -7,7 +7,7 @@
     "fixed-array": "~0.1.1"
   },
   "devDependencies": {
-    "tap": "~0.4.2"
+    "tape": "~1.1.1"
   },
   "keywords": [
     "monitoring",
@@ -26,7 +26,7 @@
     "test": "./test"
   },
   "scripts": {
-    "test": "tap test/"
+    "test": "node test/"
   },
   "engines": {
     "node": ">=0.8.0"
