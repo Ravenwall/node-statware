@@ -125,11 +125,13 @@ test("namespace methods", function (t) {
     s.zzz = "YYY"
     next()
   })
+  stats.namespace("ns").set("saved", true)
   stats.getStats(function (s) {
     t.equals(s.ns.bar, 2)
     t.equals(s.ns.foo, "blah")
     t.equals(s.zzz, "ZZZ")
     t.equals(s.ns.zzz, "YYY")
+    t.equals(s.ns.saved, true)
     t.ok(s.statware instanceof Object, "adds statware info when a helper is defined")
     t.end()
   })
