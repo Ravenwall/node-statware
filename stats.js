@@ -109,6 +109,7 @@ Stats.prototype.namespace = function (name) {
         status[name][key].mean = statWindow.mean()
         next()
       })
+      return statWindow
     }})
     Object.defineProperty(space, "addStat", {value: function (key) {
       var rolling = new StatsIncremental()
