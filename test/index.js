@@ -1,4 +1,6 @@
-var test = require("tape").test
+"use strict";
+
+var test = require("tape")
 var http = require("http")
 var request = require("request")
 

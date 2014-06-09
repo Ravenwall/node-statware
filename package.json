@@ -1,13 +1,15 @@
 {
   "name": "statware",
-  "description": "Status aggregation suite with middle-ware like abilities. Used by the Ravenwall agent.",
+  "description": "Node.js process/system/custom metrics aggregation suite with middle-ware like abilities.",
   "version": "0.4.1",
   "author": "Bryce B. Baril <bryce@ravenwall.com>",
   "dependencies": {
-    "fixed-array": "~0.1.1"
+    "fixed-array": "~1.0.0",
+    "stats-incremental": "^1.0.0",
+    "stats-lite": "^1.0.3"
   },
   "devDependencies": {
-    "tape": "~1.1.1"
+    "tape": "~2.13.2"
   },
   "keywords": [
     "monitoring",
@@ -17,6 +19,16 @@
     "performance",
     "ravenwall"
   ],
+  "jshintConfig": {
+    "asi": true,
+    "globalstrict": true,
+    "validthis": true,
+    "eqnull": true,
+    "node": true,
+    "loopfunc": true,
+    "newcap": false,
+    "eqeqeq": false
+  },
   "repository": {
     "type": "git",
     "url": "http://github.com/Ravenwall/node-statware.git"
