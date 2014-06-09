@@ -10,6 +10,10 @@ function statware(initial) {
   var stats = new Stats(initial)
 
   stats.installSystemInfo = function () {
+    var sumSpeed = function (p, c) {
+      return p + c.speed
+    }
+
     stats.registerHelper(function (status, next) {
       var sys = status.system_info
       if (sys == null) {
@@ -28,7 +32,8 @@ function statware(initial) {
       var cpuinfo = os.cpus()
       sys.cores = cpuinfo.length
       sys.cpu_model = cpuinfo[0].model
-      sys.cpu_speed = cpuinfo.reduce(function (p, c) { return p + c.speed}, 0) / cpuinfo.length
+      sys.cpu_speed = cpuinfo.reduce(sumSpeed, 0) / cpuinfo.length
+      sys.hostname = os.hostname()
 
       status.system_info = sys
       next()
