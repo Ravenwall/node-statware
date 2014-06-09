@@ -33,7 +33,7 @@
     "type": "git",
     "url": "http://github.com/Ravenwall/node-statware.git"
   },
-  "main": "index.js",
+  "main": "statware.js",
   "directories": {
     "test": "./test"
   },
