@@ -121,10 +121,15 @@ test("namespace methods", function (t) {
     s.zzz = "ZZZ"
     next()
   })
+  ns.registerHelper(function (s, next) {
+    s.zzz = "YYY"
+    next()
+  })
   stats.getStats(function (s) {
     t.equals(s.ns.bar, 2)
     t.equals(s.ns.foo, "blah")
     t.equals(s.zzz, "ZZZ")
+    t.equals(s.ns.zzz, "YYY")
     t.ok(s.statware instanceof Object, "adds statware info when a helper is defined")
     t.end()
   })

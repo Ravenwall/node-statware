@@ -118,11 +118,14 @@ Stats.prototype.namespace = function (name) {
       })
       return rolling
     }})
+    Object.defineProperty(space, "registerHelper", {value: function (fn) {
+      parent.registerHelper(function (status, next) {
+        var ns = status[name]
+        fn(ns, next)
+      })
+    }})
     Object.defineProperty(space, "namespace", {value: function () {
       throw new Error("This is already a namespace. Nested namespaces not supported.")
-    }})
-    Object.defineProperty(space, "registerHelper", {value: function () {
-      throw new Error("This is a namespace, install helpers on the parent instance.")
     }})
 
     this._stats[name] = space
