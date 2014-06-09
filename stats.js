@@ -3,7 +3,6 @@
 module.exports = Stats
 
 var FixedArray = require("fixed-array")
-var StatsLite = require("stats-lite")
 var StatsIncremental = require("stats-incremental")
 
 function Stats(initial) {
