@@ -139,7 +139,7 @@ Create a [stats-incremental](http://npm.im/stats-incremental) instance that will
 `var namespace = statwareInstance.namespace(name)`
 ---
 
-Create a toplevel namespace inside the statInstance that behaves almost identically to `statwareInstance` except it cannot deeper namespaces.
+Create a top-level namespace inside the `statInstance` that behaves almost identically to `statwareInstance` except it cannot define deeper namespaces.
 
 `stawareInstance.installProcessInfo()`
 ---
