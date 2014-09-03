@@ -1,7 +1,7 @@
 {
   "name": "statware",
   "description": "Node.js process/system/custom metrics aggregation suite with middle-ware like abilities.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Bryce B. Baril <bryce@ravenwall.com>",
   "dependencies": {
     "fixed-array": "~1.0.0",
