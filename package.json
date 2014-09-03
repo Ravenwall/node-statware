@@ -5,10 +5,10 @@
   "author": "Bryce B. Baril <bryce@ravenwall.com>",
   "dependencies": {
     "fixed-array": "~1.0.0",
-    "stats-incremental": "^1.0.0"
+    "stats-incremental": "^1.0.1"
   },
   "devDependencies": {
-    "tape": "~2.13.2"
+    "tape": "~2.14.0"
   },
   "keywords": [
     "monitoring",
