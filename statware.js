@@ -48,8 +48,8 @@ function statware(initial) {
       }
       proc.uptime = process.uptime()
       proc.memory = process.memoryUsage()
-      proc.active_requests = process._getActiveRequests.length
-      proc.active_handles = process._getActiveHandles.length
+      proc.active_requests = process._getActiveRequests().length
+      proc.active_handles = process._getActiveHandles().length
       proc.versions = process.versions
       proc.node_env = process.env.NODE_ENV || ""
       proc.pid = process.pid

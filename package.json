@@ -8,7 +8,7 @@
     "stats-incremental": "~1.1.0"
   },
   "devDependencies": {
-    "tape": "~2.14.0"
+    "tape": "~3.0.0"
   },
   "keywords": [
     "monitoring",
